@@ -73,10 +73,11 @@
     var playname = document.getElementById('playname').value;
     var sub = document.getElementById('sub').value;
     var user_id = localStorage.getItem(ID);
-    var things = {0:document.getElementById('pre1').value, 1:document.getElementById('pre2').value, 2:document.getElementById('pre3').value};
+    var things = {0:document.getElementById('pre1').value, 1:document.getElementById('pre2').value,2:document.getElementById('pre3').value};
     var step1 = {0:document.getElementById("step1").value,1:'http://'};
     var step2 = {0:document.getElementById("step2").value,1:'http://'};
     var step3 = {0:document.getElementById("step3").value,1:'http://'};
+    var place = document.getElementById("place").value;
     firebase.firestore().collection("plays").get().then(function(docs){
       doc_count = new String(docs.size + 1);
       firebase.firestore().collection("plays").doc(doc_count.toString()).set({
@@ -84,6 +85,7 @@
         best_peaple: peaple,
         minuts: time,
         name: playname,
+        place: place,
         sub: sub,
         user_id: user_id
       },{ merge: true }) //merge:trueって入れると既存のフィールドを残したまま追加ができる

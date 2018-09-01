@@ -254,48 +254,8 @@
 			<button class="button" onClick="hideModal('top')">閉じる</button>
 			</div>
 		</ons-modal>
-    
-    <ons-template id="home.html">
-      <!-- マイページを読み込んだ時だけonloadが動くのか要検証 -->
-      <ons-navigator swipeable id="navigator" page="home.html">
-      <ons-page id="home">
-        <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
-        <ons-toolbar>
-          <div class="left">
-            <ons-toolbar-button onclick="fn.open()">
-              <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
-            </ons-toolbar-button>
-          </div>
-          <div class="center">
-            まいぺーじ
-          </div>
-        </ons-toolbar>
 
-        <div class="library" id="library">
-          <ons-row>
-            <ons-col  class="item">
-              プロフィール
-              <ons-button modifier="light" onClick="show_profile();">編集</ons-button>
-            </ons-col>
-            
-          </ons-row>
-          <ons-row>
-            <ons-col  class="item">
-              スライム遊び
-              <ons-button modifier="light" onClick="show_detail();">詳細</ons-button>
-            </ons-col>
-            <ons-col  class="item">
-              水遊び
-              <ons-button modifier="light" onClick="show_detail();">詳細</ons-button>
-            </ons-col>
-          </ons-row>
-        </div>
-        <button id="add_play_button" onclick="to_add_play();">＋</button>
-        <button id="setting1" onclick="setting1();">せっちんぐ1</button>
-        <button id="setting2" onclick="setting2();">せっちんぐ2</button>
-      </ons-page>
-      </ons-navigator>
-    </ons-template>
+<!-- ons-template -->
 
   <!--firebaseとの接続-->
   <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
