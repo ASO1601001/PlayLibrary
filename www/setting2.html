@@ -1,0 +1,56 @@
+<ons-page id="setting2">
+  <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+    <div class="" style="text-align: center;">
+	<ons-toolbar>
+		<div class="center">初期設定画面</div>
+	</ons-toolbar>
+
+
+	<div class="" style="text-align: center;">
+		<p>
+			お子様の年齢が対象の遊びを<br>
+			５つピックアップしました！
+		</p>
+	</div>
+
+	<div style="text-align: center; margin-top: 30px;">
+	</div>
+
+	<p style="margin-top: 30px; padding: 0px 30px;">
+		<ons-button modifier="large" onclick="more()">もっと探す</ons-button>
+	</p>
+
+	<ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel">
+		<ons-carousel-item style="background-color: #085078;">
+			<div style="text-align: left; font-size: 20px; margin-top: 20px; color: #fff; padding:20px;">
+				<h2>遊び１</h2>
+				対象年齢:3歳~6歳<br>
+				必要なもの<br>
+				説明
+			</div>
+		</ons-carousel-item>
+		<ons-carousel-item style="background-color: #373B44;">
+			<div style="text-align: left; font-size: 20px; margin-top: 20px; color: #fff; padding:20px;">
+				<h2>遊び2</h2>
+				対象年齢:3歳~6歳<br>
+				必要なもの<br>
+				説明
+			</div>
+		</ons-carousel-item>
+		<ons-carousel-item style="background-color: #D38312;">
+			<div style="text-align: left; font-size: 20px; margin-top: 20px; color: #fff; padding:20px;">
+				<h2>遊び3</h2>
+				対象年齢:3歳~6歳<br>
+				必要なもの<br>
+				説明
+			</div>
+		</ons-carousel-item>
+	</ons-carousel>
+  <script>
+    function more(){
+      document.querySelector('#navigator').pushPage('index.html');
+    }
+  </script>
+
+
+</ons-page>

@@ -1,0 +1,67 @@
+<ons-page>
+  <div class="page__background" style="background-image:url('img/back.jpg');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+    <div class="" style="text-align: center;">
+	<ons-toolbar>
+    <div class="center">会員情報確認</div>
+	</ons-toolbar>
+
+	<div class="" style="text-align: center;">
+		<p>
+			あなたの情報は以下で間違いありませんか？
+		</p>
+	</div>
+
+	<div style="text-align: center; margin-top: 30px;">
+		<div>
+			<p id="name_view"></p>
+      <p id="mail_view"></p>
+			<p id="pass_view"></p>
+		</div>
+		<p style="margin-top: 30px; padding: 0px 30px;">
+			<ons-button modifier="large" onclick="correct();">次へ</ons-button>
+      <p><ons-button modifier="light" onclick="fn.load('add_user.html');">戻る</ons-button></p>
+		</p>
+	</div>
+  <script>
+    if(local_strage_check(add_user_key1)){
+      var obj = get_user(add_user_key1);
+      //ここの処理はうまくいってるのに、初回読み込み時のみうまく表示されない
+      document.getElementById('name_view').innerHTML = "お名前：　　　　" + obj.name;
+      document.getElementById('mail_view').innerHTML = "メールアドレス：" + obj.mail;
+      //document.getElementById('pass_view').innerHTML = "パスワード：　　" + obj.pass;
+    }
+
+    function correct(){
+      var obj = get_user(add_user_key1);
+      var name = obj.name;
+      var email = obj.mail;
+      var password = obj.pass;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(function(){
+        //updateProfile()をしたら、Userの情報が追加できるけど、出来るものは限られてる
+        //アイコンもURL指定できるから、それ以外の情報をDBと紐づける
+        var user = firebase.auth().currentUser;
+        user.updateProfile({
+          displayName: name
+          //photoURL: "https://example.com/jane-q-user/profile.jpg"
+        }).then(function() {
+          // Update successful.
+          var obj = get_user(add_user_key1);
+          add_user(add_user_key, obj.name, obj.mail, obj.pass); //本登録
+          remove_user(add_user_key1); //仮登録してたDBを削除
+          fn.load('setting1.html');
+          console.log('成功');
+        }).catch(function(error) {
+          // An error happened.
+          console.log('失敗した？');
+        });
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error.code + '\n' + error.message);
+        // ...
+      });
+    }
+  </script>
+</ons-page>

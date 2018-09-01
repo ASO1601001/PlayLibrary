@@ -1,0 +1,236 @@
+<ons-page>
+  <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+    <div class="" style="text-align: center;">
+	<ons-toolbar>
+		<div class="center">初期設定画面</div>
+	</ons-toolbar>
+
+	<div class="" style="text-align: center;">
+    <p id="setting_name"></p>
+		<p>
+			ようこそ！<br><!-- 登録した名前を表示 -->
+			まずはお名前とお子様の年齢と<br>
+			人数を教えてください。
+		</p>
+	</div>
+
+	<div style="text-align: center; margin-top: 30px;">
+		<p>
+      <ons-select id="select_child" onchange="change_child();">
+        <option value="1">1人</option>
+				<option value="2">2人</option>
+				<option value="3">3人</option>
+				<option value="4">4人</option>
+				<option value="5">5人</option>
+      </ons-select>
+		</p>
+
+    <div id="input_child">
+      <p>
+        <ons-input id="name1" modifier="underbar" placeholder="お名前" float></ons-input>
+        <p><ons-input id="age1" modifier="underbar" placeholder="西暦/月/日" float></ons-input></p>
+      </p>
+    </div>
+
+		<p style="margin-top: 30px; padding: 0px 30px;">
+			<ons-button modifier="large" onclick="ok();">使用開始</ons-button><br><br>
+      <ons-button modifier="large" onclick="del();">DB削除</ons-button>
+		</p>
+	</div>
+
+  <script>
+    //ログイン処理（多分いらない）
+    /*var s_obj = get_user(add_user_key);
+    var s_email = s_obj.mail;
+    var s_password = s_obj.pass;
+    firebase.auth().signInWithEmailAndPassword(s_email, s_password).then(function(){
+      console.log('ログインできたよ！');
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    // ...
+    });*/
+
+    //ここでdisplaynameを取得して、ページに表示
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        var displayName = user.displayName;
+        var uid = user.uid;
+        localStorage.setItem(ID,uid);//ユーザIDをここで登録しました
+        document.getElementById('setting_name').innerHTML = displayName;
+      }
+    });
+    /*var s_user = firebase.auth().currentUser;
+    if (s_user) {
+        // User is signed in.
+        var displayName = s_user.displayName;
+        document.getElementById('setting_name').innerHTML = displayName;
+    }else{
+      console.log(s_user);
+    }*/
+
+    var real_func1,real_func2,real_func3,real_func4,real_func5;
+    //リモートDBに登録と、必要な情報を登録したことをlocalstrageに記録
+    function ok(){
+      if(document.getElementById('name1').value != "" || document.getElementById('age1').value != ""){
+        /*リモートDBに会員情報を登録する処理をここに追加（if文の中に直接でも可）*/
+        for(var j=1; j<=child_counter; j++){
+
+          //ここで変数に入れる
+          eval("real_func"+j+"= 1");
+        }
+        check();
+      }else{
+        alert('お子様の生年月日とお名前を入力してください');
+      }
+    }
+
+    //入力された子供の数dbに情報を入力
+    function check(){
+      //一人目
+      if(real_func1 != null){
+        var doc_count;
+        firebase.firestore().collection("babys").get()
+        .then(function(doc){
+          doc_count = new String(doc.size + 1);//現在のドキュメントの数を取得し、ドキュメント追加のために1プラス
+          var age = new Date(document.getElementById("age1").value);//i個めの生年月日の値を取得
+          var name = document.getElementById("name1").value;//i個めの名前の値を取得
+          var uid = localStorage.getItem(ID);
+          firebase.firestore().collection("babys").doc(doc_count.toString()).set({
+            age: age,
+            name: name,
+            user_id: uid
+          })
+          .then(function() {
+            //二人目
+            if(real_func2 != null){
+              var doc_count;
+              firebase.firestore().collection("babys").get()
+              .then(function(doc){
+                doc_count = new String(doc.size + 1);//現在のドキュメントの数を取得し、ドキュメント追加のために1プラス
+                var age = new Date(document.getElementById("age2").value);//i個めの生年月日の値を取得
+                var name = document.getElementById("name2").value;//i個めの名前の値を取得
+                var uid = localStorage.getItem(ID);
+                firebase.firestore().collection("babys").doc(doc_count.toString()).set({
+                  age: age,
+                  name: name,
+                  user_id: uid
+                })
+                .then(function() {
+                  //三人目
+                  if(real_func3 != null){
+                    var doc_count;
+                    firebase.firestore().collection("babys").get()
+                    .then(function(doc){
+                      doc_count = new String(doc.size + 1);//現在のドキュメントの数を取得し、ドキュメント追加のために1プラス
+                      var age = new Date(document.getElementById("age3").value);//i個めの生年月日の値を取得
+                      var name = document.getElementById("name3").value;//i個めの名前の値を取得
+                      var uid = localStorage.getItem(ID);
+                      firebase.firestore().collection("babys").doc(doc_count.toString()).set({
+                        age: age,
+                        name: name,
+                        user_id: uid
+                      })
+                      .then(function() {
+                        //四人目
+                        if(real_func4 != null){
+                        var doc_count;
+                        firebase.firestore().collection("babys").get()
+                        .then(function(doc){
+                          doc_count = new String(doc.size + 1);//現在のドキュメントの数を取得し、ドキュメント追加のために1プラス
+                          var age = new Date(document.getElementById("age4").value);//i個めの生年月日の値を取得
+                          var name = document.getElementById("name4").value;//i個めの名前の値を取得
+                          var uid = localStorage.getItem(ID);
+                          firebase.firestore().collection("babys").doc(doc_count.toString()).set({
+                            age: age,
+                            name: name,
+                            user_id: uid
+                          })
+                          .then(function() {
+                            //五人目
+                            if(real_func5 != null){
+                            var doc_count;
+                            firebase.firestore().collection("babys").get()
+                            .then(function(doc){
+                              doc_count = new String(doc.size + 1);//現在のドキュメントの数を取得し、ドキュメント追加のために1プラス
+                              var age = new Date(document.getElementById("age5").value);//i個めの生年月日の値を取得
+                              var name = document.getElementById("name5").value;//i個めの名前の値を取得
+                              var uid = localStorage.getItem(ID);
+                              firebase.firestore().collection("babys").doc(doc_count.toString()).set({
+                                age: age,
+                                name: name,
+                                user_id: uid
+                              })
+                              .then(function() {
+                                //リモートDBに追加できたら以下の処理を実行
+                                var obj2 = { flag: true};
+                                localStorage.setItem(KEY, JSON.stringify(obj2));
+                                fn.load('setting2.html');
+                              })
+                              .catch(function(error) {
+                                console.error("Error writing document: ", error);
+                              });
+                            });
+                            }
+                          })
+                          .catch(function(error) {
+                            console.error("Error writing document: ", error);
+                          });
+                        });
+                        }else{
+                          //リモートDBに追加できたら以下の処理を実行
+                          var obj2 = { flag: true};
+                          localStorage.setItem(KEY, JSON.stringify(obj2));
+                          fn.load('setting2.html');
+                        }
+                      })
+                      .catch(function(error) {
+                        console.error("Error writing document: ", error);
+                      });
+                    });
+                  }else{
+                    //リモートDBに追加できたら以下の処理を実行
+                    var obj2 = { flag: true};
+                    localStorage.setItem(KEY, JSON.stringify(obj2));
+                    fn.load('setting2.html');
+                  }
+                })
+                .catch(function(error) {
+                  console.error("Error writing document: ", error);
+                });
+              });
+            }else{
+              //リモートDBに追加できたら以下の処理を実行
+              var obj2 = { flag: true};
+              localStorage.setItem(KEY, JSON.stringify(obj2));
+              fn.load('setting2.html');
+            }
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
+        });
+      }else{
+        console.log('そんなのないよ');
+      }
+    }
+
+    //フォームを増減させる
+    var child_counter = 1;//何人の子供の情報が入力されたか記録する
+    function change_child(){
+      // 値(数値)を取得
+      var num = document.getElementById('select_child').value;
+      document.getElementById('input_child').innerHTML = "";
+      var script = document.createElement('p');
+      var di = document.getElementById('input_child');
+
+      for(var i=1; i <= num; i++){
+        var form = '<ons-input id="name'+ i +'" modifier="underbar" placeholder="お名前" float></ons-input><p><ons-input id="age'+ i +'" modifier="underbar" placeholder="西暦/月/日" float></ons-input></p>';
+        counter = i;
+        script.innerHTML += form;
+      }
+      di.appendChild(script);
+    }
+  </script>
+</ons-page>

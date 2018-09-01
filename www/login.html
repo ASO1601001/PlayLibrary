@@ -1,0 +1,44 @@
+<ons-page id="login">
+  <ons-toolbar>
+    <ons-back-button>
+      Back
+    </ons-back-button>
+		<div class="center">ログイン</div>
+	</ons-toolbar>
+
+  <div style="text-align: center; margin-top: 30px;">
+		<span id="loginMsg" style="color: red;"></span>
+		<div>
+      <p><ons-input id="log_mail" modifier="underbar" placeholder="メールアドレス" float></ons-input></p>
+			<p><ons-input id="log_pass" modifier="underbar" placeholder="パスワード" type="password" float></ons-input></p>
+		</div>
+		<p style="margin-top: 30px; padding: 0px 30px;">
+			<ons-button modifier="large" onclick="logi();">次へ</ons-button>
+      <p><ons-button modifier="light" onclick="reset();">リセット</ons-button></p>
+		</p>
+	</div>
+
+  <script>
+    function logi(){
+      var mail = document.getElementById('log_mail').value;
+      var password = document.getElementById('log_pass').value;
+
+      firebase.auth().signInWithEmailAndPassword(mail,password)
+      .then(function() {
+        //firestoreからnameを取得して、すでに入力されてる情報とともにケータイに保存（保存する必要ないけどね）
+        var user = firebase.auth().currentUser;
+        if (user) {
+          // User is signed in.
+          var displayName = user.displayName;
+          alert(displayName);
+          add_user(add_user_key, displayName, mail, pass); //本登録
+        } else {
+          // No user is signed in.
+        }
+        fn.load('setting1.html');
+      }).catch(function(error) {
+        alert(error.message);
+      });
+    }
+  </script>
+</ons-page>

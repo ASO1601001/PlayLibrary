@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    var KEY = 'key1';
+    var add_user_key1 = 'key2';
+    var add_user_key = 'user';
+    var ID = 'id';
+
+    //del();
+
+    ons.ready(function() {
+      //ログイン処理追加箇所
+      if(!local_strage_check(KEY)){
+        console.log('step1');
+        fn.load('setting1.html');
+        if(!local_strage_check(add_user_key)){
+          console.log('step2');
+          fn.load('add_user_check.html');
+          if(!local_strage_check(add_user_key1)){
+            console.log('step3');
+            fn.load('add_user.html');
+          }
+        }
+      }else{
+        //ここで、すでにログインしてる人なら自分が投稿してる本が最初に読み込まれるようにしている
+        //ログイン処理（多分いらない）
+        var s_obj = get_user(add_user_key);
+        var s_email = s_obj.mail;
+        var s_password = s_obj.pass;
+        firebase.auth().signInWithEmailAndPassword(s_email, s_password).then(function(){
+          console.log('ログインできたよ！');
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        // ...
+        });
+        document.getElementById('body').setAttribute("onload", "mypage_load();");
+      }
+    });
+
+    function mypage_load(){
+      console.log()
+        var count = 3;
+        if(count != 0){
+          for(var i=1; i <= count; i+=2){
+            if(i < count){
+              document.getElementById('library').innerHTML += '<ons-row><ons-col class="item">図鑑' + i + '<button onClick="showModal(\'top\')">モーダル</button></ons-col><ons-col  class="item">図鑑' + (i+1) + '<button onClick="showModal(\'top\')">モーダル</button></ons-col></ons-row>';
+            }else{
+              document.getElementById('library').innerHTML += '<ons-row><ons-col  class="item">図鑑' + i + '<button onClick="showModal(\'top\')">モーダル</button></ons-col><ons-col class="item"></ons-col></ons-row>';
+            }
+          }
+        }
+      }
+
+      window.fn = {};
+      window.fn.open = function() {
+        var menu = document.getElementById('menu');
+        menu.open();
+      };
+      window.fn.load = function(page) {
+        var content = document.getElementById('content');
+        var menu = document.getElementById('menu');
+        content
+          .load(page)
+          .then(menu.close.bind(menu));
+      };
+
+      // ローカルストレージをセットします。
+      function add_user(key,name,mail,pass) {
+        var obj = { name: name, mail:mail, pass: pass};
+        localStorage.setItem(key, JSON.stringify(obj));
+        var item = localStorage.getItem(key);
+        var obj = JSON.parse(item);
+        console.log(obj.name);
+      }
+
+      // ローカルストレージの値を取得します。。
+      function get_user(key) {
+        var item = localStorage.getItem(key);
+        var obj = JSON.parse(item);
+        return obj;
+      }
+
+      // ローカルストレージの指定されたキー名のデータを消去します。
+      function remove_user(key) {
+          localStorage.removeItem(key);
+      }
+
+      //ローカルストレージがあるかチェックします。
+      function local_strage_check(key){
+        var item = localStorage.getItem(key);
+        if(item == null){
+          return false;
+        }
+        return true;
+      }
+
+      function del(){
+        remove_user(add_user_key);
+        remove_user(add_user_key1);
+        remove_user(KEY);
+      }
+
+    //詳細
+			function detail(){
+				hideModal("top");
+				document.querySelector('#navigator').pushPage('detail.html');
+			}
+
+			//コメント
+			function comment(){
+				hideModal("top");
+				document.querySelector('#navigator').pushPage('comment.html');
+			}
+
+			//コメント送信
+			function send(){
+				document.querySelector('#navigator').pushPage('send_comment.html');
+			}
+
+			//カルーセル
+			var prev = function() {
+				var carousel = document.getElementById('carousel');
+				carousel.prev();
+			};
+
+			var next = function() {
+				var carousel = document.getElementById('carousel');
+				carousel.next();
+			};
+
+			ons.ready(function() {
+				var carousel = document.addEventListener('postchange', function(event) {
+					console.log('Changed to ' + event.activeIndex)
+				});
+			});
+
+			//モーダル表示
+			function showModal(id) {
+				var modal = document.getElementById(id);
+				modal.show();
+			}
+			//モーダル非表示
+			function hideModal(id) {
+				var modal = document.getElementById(id);
+				modal.hide();
+			}
+
+			function back(){
+				document.querySelector('#navigator').popPage();
+			}
+
+      function show_profile(){
+        document.querySelector('#navigator').pushPage('my_profile.html');
+      }
+
+      function show_detail(){
+        document.querySelector('#navigator').pushPage('detail.html');
+      }
+  </script>
+</head>
+
+
+<!--<body onload="mypage_load();">-->
+  <body id="body">
+
+  <ons-splitter>
+    <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+      <ons-page>
+        <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+        <ons-list>
+          <ons-list-item onclick="fn.load('home.html')" tappable>
+            マイページ
+          </ons-list-item>
+          <!--<ons-list-item onclick="fn.load('board.html')" tappable>
+            setting1
+          </ons-list-item>-->
+          <ons-list-item onclick="fn.load('search.html')" tappable>
+            あそび検索
+          </ons-list-item>
+          <ons-list-item onclick="fn.load('kiku.html')" tappable>
+            司書さんに聞く
+          </ons-list-item>
+          
+        </ons-list>
+      </ons-page>
+    </ons-splitter-side>
+    <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+  </ons-splitter>
+
+  <!-- ポップアップ -->
+		<ons-modal direction="up" id="top">
+			<div style="text-align: center">
+				<p>
+				<h3>遊びの名前</h3>
+				</p>
+			<button class="button" onclick="comment()">コメント</button>
+			<p>
+				・遊びの概要<br>
+				・必要なもの<br>
+				・対象年齢<br>
+				・所要時間
+			</p>
+			<button class="button" onclick="detail()">詳細</button>
+			<button class="button" onClick="hideModal('top')">閉じる</button>
+			</div>
+		</ons-modal>
+    
+    <ons-template id="home.html">
+      <!-- マイページを読み込んだ時だけonloadが動くのか要検証 -->
+      <ons-navigator swipeable id="navigator" page="home.html">
+      <ons-page id="home">
+        <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+        <ons-toolbar>
+          <div class="left">
+            <ons-toolbar-button onclick="fn.open()">
+              <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+            </ons-toolbar-button>
+          </div>
+          <div class="center">
+            まいぺーじ
+          </div>
+        </ons-toolbar>
+
+        <div class="library" id="library">
+          <ons-row>
+            <ons-col  class="item">
+              プロフィール
+              <ons-button modifier="light" onClick="show_detail();">編集</ons-button>
+            </ons-col>
+            
+          </ons-row>
+          <ons-row>
+            <ons-col  class="item">
+              スライム遊び
+              <ons-button modifier="light" onClick="show_detail();">詳細</ons-button>
+            </ons-col>
+            <ons-col  class="item">
+              水遊び
+              <ons-button modifier="light" onClick="show_detail();">詳細</ons-button>
+            </ons-col>
+          </ons-row>
+        </div>
+        <button id="add_play_button" onclick="to_add_play();">＋</button>
+        <button id="detail" onclick="detail();"></button>
+      </ons-page>
+      </ons-navigator>
+    </ons-template>
+
+  <!--firebaseとの接続-->
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyD1Gwa2XATCo578J0uLm5ql2e9VT5MDVDg",
+      authDomain: "play-library.firebaseapp.com",
+      databaseURL: "https://play-library.firebaseio.com",
+      projectId: "play-library",
+      storageBucket: "play-library.appspot.com",
+      messagingSenderId: "438964813524"
+    };
+    firebase.initializeApp(config);
+
+    function auto_login(){
+      var email = document.getElementById('id').value;
+      var password = document.getElementById('pass').value;
+      firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
+        console.log('ログインできたよ！');
+      }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+    }
+
+    function get_store_user(){
+      var user = firebase.auth().currentUser;
+
+      if (user) {
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+        alert(user.email);
+      } else {
+        // No user is signed in.
+      }
+    }
+
+    function out_user(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert('ログアウトしたよ');
+      }).catch(function(error) {
+        // An error happened.
+      });
+    }
+
+    function check_user(){
+      var user = firebase.auth().currentUser;
+
+      firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        var providerData = user.providerData;
+        alert(displayName+"\n"+email+"\n"+emailVerified+"\n"+photoURL+"\n"+uid);
+      }else{
+
+      }
+      });
+    }
+
+    function sample(){
+      /*firebase.firestore().collection("users").doc("test").set({
+        id: "test",
+      },{ merge: true }) //merge:trueって入れると既存のフィールドを残したまま追加ができる
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });*/
+
+      firebase.firestore().collection("users").doc("test").get()
+      .then(
+        function(doc) {
+          if (doc.exists) {
+            console.log("Document data:"+doc.id+' '+doc.data().name);//doc.data()がオブジェクトと同じ使い方ができる
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:"+error);
+      });
+    }
+
+    function to_add_play(){
+      hideModal("top");
+				document.querySelector('#navigator').pushPage('add_play.html');
+    }
+  </script>
+</body>
+</html>

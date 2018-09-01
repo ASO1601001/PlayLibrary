@@ -1,0 +1,73 @@
+
+<ons-navigator swipeable id="navigator">
+<ons-page>
+  <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+    <div class="" style="text-align: center;">
+	<ons-toolbar>
+		<div class="center">会員登録</div>
+	</ons-toolbar>
+  
+		<p>
+			ようこそ「あそぶっく」へ！<br>
+			まずは会員情報を設定してください<br>
+		</p>
+	</div>
+
+	<div style="text-align: center; margin-top: 30px;">
+		<span id="loginMsg" style="color: red;"></span>
+		<div>
+			<p><ons-input id="name" modifier="underbar" placeholder="お名前" float></ons-input></p>
+      <p><ons-input id="mail" modifier="underbar" placeholder="メールアドレス" float></ons-input></p>
+			<p><ons-input id="pass" modifier="underbar" placeholder="パスワード" type="password" float></ons-input></p>
+		</div>
+		<p style="margin-top: 30px; padding: 0px 30px;">
+			<ons-button modifier="large" onclick="provision_sign();">次へ</ons-button>
+      <p><ons-button modifier="light" onclick="reset();">リセット</ons-button></p>
+      <ons-button modifier="light" onclick="to_login();">ログインはこちら</ons-button>
+      <!-- <ons-button modifier="large" onclick="send_mail();">会員の方はこちら</ons-button> -->
+		</p>
+	</div>
+  <script>
+  if(local_strage_check(add_user_key1)){//仮登録してたら前回の入力値を表示
+    var obj = get_user(add_user_key1);
+    document.getElementById('name').value = obj.name;
+    document.getElementById('mail').value = obj.mail;
+    document.getElementById('pass').value = obj.pass;
+  }
+
+  function provision_sign(){
+    //バックエンドに登録しておかないとメール送信できない
+
+    //メール内容にカスタムURLスキームを入れて
+    //そのURL経由でこのアプリを開くと会員登録完了という流れ
+    var name = document.getElementById('name').value;
+    var mail = document.getElementById('mail').value;
+    var pass = document.getElementById('pass').value;
+    
+    if(name == '' || mail == '' || pass == '' || pass.length < 6){
+      alert('名前、メールアドレス、パスワード全てを入力してください');
+    }else{
+      add_user(add_user_key1,name,mail,pass);
+      fn.load("add_user_check.html");
+    }
+    add_user(add_user_key1,name,mail,pass);
+      fn.load("add_user_check.html");
+  }
+
+  //会員登録画面の入力値をリセット
+  function reset(){
+    var name = document.getElementById('name').value = "";
+    var mail = document.getElementById('mail').value = "";
+    var pass = document.getElementById('pass').value = "";
+
+    if(!local_strage_check(add_user_key1)){
+      remove_user(add_user_key1); //もし仮登録していたらその値も削除
+    }
+  }
+
+  function to_login(){
+    document.querySelector('#navigator').pushPage('login.html');
+  }
+</script>
+</ons-page>
+</div>

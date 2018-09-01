@@ -1,0 +1,67 @@
+<ons-page id="add_play">
+  <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+	<ons-toolbar>
+		<div class="left">
+			<ons-toolbar-button onclick="fn.open()">
+				<ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+			</ons-toolbar-button>
+		</div>
+		<div class="center">
+			あそびとうろく
+		</div>
+	</ons-toolbar>
+<div class="wrap">
+	<div class="paddi">
+		
+		<h2>遊びの名前</h2>
+    <ons-input id="playname" modifier="underbar" placeholder="手袋" float></ons-input><br>
+		対象年齢：<ons-input id="age" modifier="underbar" placeholder="4"  float></ons-input><br>
+		所要時間：<ons-input id="time" modifier="underbar" placeholder="20" float></ons-input>
+	</div>
+  <!-- 
+	<div class="paddi">
+		<h2>目次</h2>
+		・ 遊びの概要<br>
+		・ 準備するもの<br>
+		・ 遊びの詳細<br>
+		1.ほげほげほげほげ<br>
+		２.ふがふがふがふが
+	</div>
+   -->
+  <div class="jyunbi">
+		<h2>準備物</h2>
+		<ul>
+      <li><ons-input id="pre" modifier="underbar" placeholder="手袋" float></ons-input></li>
+      <li><ons-input id="pre" modifier="underbar" placeholder="帽子" float></ons-input></li>
+      <li><ons-input id="pre" modifier="underbar" placeholder="いい感じの木" float></ons-input></li>
+      <!-- 
+      <button class="button" onclick="comment()">＋</button>
+       -->
+    </ul>
+	</div>
+
+  <div class="step">
+    <h2>ステップ</h2>
+    <ul>
+      <li><ons-input id="step" modifier="underbar" placeholder="まずは手を洗います。" float></ons-input></li>
+      <li><ons-input id="step" modifier="underbar" placeholder="お肉を切ります。" float></ons-input></li>
+      <li><ons-input id="step" modifier="underbar" placeholder="焼きます。" float></ons-input></li>
+      <!-- ボタンを押すとステップの入力欄を増やしたい 
+      <button class="button" onclick="comment()">＋</button>
+      -->
+
+    </ul>
+  </div>
+  <div class="place">
+    <h2>場所</h2>
+    <p>
+      <ons-input id="place" modifier="underbar" placeholder="良さげな森" float></ons-input>
+    </p>
+  </div>
+  <button id="upload" onclick="upload()" class="square_btn">投稿する</button>
+</div>
+<script>
+  
+</script>
+</ons-page>
+

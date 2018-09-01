@@ -1,0 +1,47 @@
+<ons-page id="comment.html">
+	<ons-toolbar>
+		<div class="left">
+			<ons-toolbar-button onclick="fn.open()">
+				<ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+			</ons-toolbar-button>
+		</div>
+		<div class="center">
+			コメント
+		</div>
+	</ons-toolbar>
+
+	<div class="paddi">
+		<h3>みんなの反応</h3>
+		<ons-row class="row">
+			<ons-col class="">
+				ユーザー名<br>
+				<p>
+					text
+				</p>
+			</ons-col>
+			<ons-col class="">
+				<img src="" alt="" />
+			</ons-col>
+		</ons-row>
+	</div>
+
+	<div class="paddi" style="text-align:center;">
+		<input type="radio">
+		<input type="radio">
+		<input type="radio">
+		<input type="radio">
+		<br><br>
+		<button class="button" onclick="send()">コメントする</button>
+	</div>
+
+	<style>
+		.paddi{
+			padding: 20px;
+		}
+		.row{
+			margin: 10px 0px;
+			background-color: #fff;
+			padding: 10px;
+		}
+	</style>
+</ons-page>
