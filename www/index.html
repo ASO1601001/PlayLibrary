@@ -170,6 +170,10 @@
       function show_detail(){
         document.querySelector('#navigator').pushPage('detail.html');
       }
+
+      function show_play(){
+        document.querySelector('#navigator').pushPage('search_result.html');
+      }
   </script>
 </head>
 
@@ -239,7 +243,7 @@
           <ons-row>
             <ons-col  class="item">
               プロフィール
-              <ons-button modifier="light" onClick="show_detail();">編集</ons-button>
+              <ons-button modifier="light" onClick="show_profile();">編集</ons-button>
             </ons-col>
             
           </ons-row>

@@ -58,10 +58,34 @@
       <ons-input id="place" modifier="underbar" placeholder="良さげな森" float></ons-input>
     </p>
   </div>
-  <button id="upload" onclick="upload()" class="square_btn">投稿する</button>
+  <button id="upload" onclick="add_play()" class="square_btn">投稿する</button>
 </div>
 <script>
-  
+  function add_play(){
+    firebase.firestore().collection("plays").get().then(function(docs){
+      var age = 4;
+      var peaple = 1;
+      var minuts = 20;
+      var name = 'テスト';
+      var sub = 'monacaから登録したよ';
+      var user_id = 'b98xkUbUDNTcNKUH7aFuZ4JqMOz2';
+      doc_count = new String(docs.size + 1);
+      firebase.firestore().collection("plays").doc(doc_count.toString()).set({
+        best_age: age,
+        best_peaple: peaple,
+        minuts: minuts,
+        name: name,
+        sub: sub,
+        user_id: user_id
+      },{ merge: true }) //merge:trueって入れると既存のフィールドを残したまま追加ができる
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      })
+    });
+  }
 </script>
 </ons-page>
 
