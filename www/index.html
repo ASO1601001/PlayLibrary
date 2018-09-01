@@ -131,6 +131,17 @@
 				document.querySelector('#navigator').pushPage('send_comment.html');
 			}
 
+      function setting1(){
+				document.querySelector('#navigator').pushPage('setting1.html');
+			}
+      function setting2(){
+				document.querySelector('#navigator').pushPage('setting2.html');
+			}
+
+      function index(){
+				document.querySelector('#navigator').pushPage('index.html');
+			}
+
 			//カルーセル
 			var prev = function() {
 				var carousel = document.getElementById('carousel');
@@ -174,6 +185,24 @@
       function show_play(){
         document.querySelector('#navigator').pushPage('search_result.html');
       }
+      function disp(){
+
+        // 「OK」時の処理開始 ＋ 確認ダイアログの表示
+        if(window.confirm('本当にいいんですね？')){
+          out_user();
+          del();
+          fn.load('add_user.html');
+        }
+        // 「OK」時の処理終了
+        // 「キャンセル」時の処理開始
+        else{
+          window.alert('キャンセルされました'); // 警告ダイアログを表示
+        }
+        // 「キャンセル」時の処理終了
+
+      }
+
+      
   </script>
 </head>
 
@@ -183,7 +212,7 @@
 
   <ons-splitter>
     <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
-      <ons-page>
+      <ons-page id="index">
         <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
         <ons-list>
           <ons-list-item onclick="fn.load('home.html')" tappable>
@@ -197,6 +226,9 @@
           </ons-list-item>
           <ons-list-item onclick="fn.load('kiku.html')" tappable>
             司書さんに聞く
+          </ons-list-item>
+          <ons-list-item onclick="disp()" tappable>
+            ログアウト
           </ons-list-item>
           
         </ons-list>
@@ -259,7 +291,8 @@
           </ons-row>
         </div>
         <button id="add_play_button" onclick="to_add_play();">＋</button>
-        <button id="detail" onclick="detail();"></button>
+        <button id="setting1" onclick="setting1();">せっちんぐ1</button>
+        <button id="setting2" onclick="setting2();">せっちんぐ2</button>
       </ons-page>
       </ons-navigator>
     </ons-template>
@@ -311,6 +344,7 @@
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
         alert('ログアウトしたよ');
+
       }).catch(function(error) {
         // An error happened.
       });

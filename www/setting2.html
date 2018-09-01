@@ -16,9 +16,7 @@
 	<div style="text-align: center; margin-top: 30px;">
 	</div>
 
-	<p style="margin-top: 30px; padding: 0px 30px;">
-		<ons-button modifier="large" onclick="more()">もっと探す</ons-button>
-	</p>
+	
 
 	<ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel">
 		<ons-carousel-item style="background-color: #085078;">
@@ -46,11 +44,16 @@
 			</div>
 		</ons-carousel-item>
 	</ons-carousel>
-  <script>
-    function more(){
-      document.querySelector('#navigator').pushPage('index.html');
-    }
-  </script>
-
+   
+ <p style="margin-top: 30px; padding: 0px 30px;">
+		<ons-button modifier="large" onclick="more()">もっと探す</ons-button>
+	</p>
 
 </ons-page>
+
+ <script>
+    function more(){
+      document.querySelector('#navigator').pushPage('search.html');
+    }
+  </script>
+ 

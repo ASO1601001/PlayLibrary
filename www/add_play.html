@@ -14,9 +14,13 @@
 	<div class="paddi">
 		
 		<h2>遊びの名前</h2>
-    <ons-input id="playname" modifier="underbar" placeholder="手袋" float></ons-input><br>
-		対象年齢：<ons-input id="age" modifier="underbar" placeholder="4"  float></ons-input><br>
-		所要時間：<ons-input id="time" modifier="underbar" placeholder="20" float></ons-input>
+    <p><ons-input id="playname" modifier="underbar" placeholder="手袋" float></ons-input></p>
+		<p>対象年齢：<ons-input id="age" modifier="underbar" placeholder="3"  float></ons-input></p>
+    <p>推奨人数：<ons-input id="peaple" modifier="underbar" placeholder="2" float></ons-input></p>
+		<p>所要時間：<ons-input id="time" modifier="underbar" placeholder="20" float></ons-input></p>
+    <h3>遊びの概要</h3>
+    <textarea id="sub" style="border:groove" class="textarea textarea--transparent" placeholder="概要"></textarea>
+    <!--<ons-input id="sub" modifier="underbar" placeholder="概要" float></ons-input><br>-->
 	</div>
   <!-- 
 	<div class="paddi">
@@ -31,9 +35,9 @@
   <div class="jyunbi">
 		<h2>準備物</h2>
 		<ul>
-      <li><ons-input id="pre" modifier="underbar" placeholder="手袋" float></ons-input></li>
-      <li><ons-input id="pre" modifier="underbar" placeholder="帽子" float></ons-input></li>
-      <li><ons-input id="pre" modifier="underbar" placeholder="いい感じの木" float></ons-input></li>
+      <li><ons-input id="pre1" modifier="underbar" placeholder="手袋" float></ons-input></li>
+      <li><ons-input id="pre2" modifier="underbar" placeholder="帽子" float></ons-input></li>
+      <li><ons-input id="pre3" modifier="underbar" placeholder="いい感じの木" float></ons-input></li>
       <!-- 
       <button class="button" onclick="comment()">＋</button>
        -->
@@ -43,9 +47,9 @@
   <div class="step">
     <h2>ステップ</h2>
     <ul>
-      <li><ons-input id="step" modifier="underbar" placeholder="まずは手を洗います。" float></ons-input></li>
-      <li><ons-input id="step" modifier="underbar" placeholder="お肉を切ります。" float></ons-input></li>
-      <li><ons-input id="step" modifier="underbar" placeholder="焼きます。" float></ons-input></li>
+      <li><ons-input id="step1" modifier="underbar" placeholder="まずは手を洗います。" float></ons-input></li>
+      <li><ons-input id="step2" modifier="underbar" placeholder="お肉を切ります。" float></ons-input></li>
+      <li><ons-input id="step3" modifier="underbar" placeholder="焼きます。" float></ons-input></li>
       <!-- ボタンを押すとステップの入力欄を増やしたい 
       <button class="button" onclick="comment()">＋</button>
       -->
@@ -62,28 +66,42 @@
 </div>
 <script>
   function add_play(){
+    var doc_count;
+    var age = document.getElementById('age').value;
+    var peaple = document.getElementById('peaple').value;
+    var time = document.getElementById('time').value;
+    var playname = document.getElementById('playname').value;
+    var sub = document.getElementById('sub').value;
+    var user_id = localStorage.getItem(ID);
+    var things = {0:document.getElementById('pre1').value, 1:document.getElementById('pre2').value, 2:document.getElementById('pre3').value};
+    var step1 = {0:document.getElementById("step1").value,1:'http://'};
+    var step2 = {0:document.getElementById("step2").value,1:'http://'};
+    var step3 = {0:document.getElementById("step3").value,1:'http://'};
     firebase.firestore().collection("plays").get().then(function(docs){
-      var age = 4;
-      var peaple = 1;
-      var minuts = 20;
-      var name = 'テスト';
-      var sub = 'monacaから登録したよ';
-      var user_id = 'b98xkUbUDNTcNKUH7aFuZ4JqMOz2';
       doc_count = new String(docs.size + 1);
       firebase.firestore().collection("plays").doc(doc_count.toString()).set({
         best_age: age,
         best_peaple: peaple,
-        minuts: minuts,
-        name: name,
+        minuts: time,
+        name: playname,
         sub: sub,
         user_id: user_id
       },{ merge: true }) //merge:trueって入れると既存のフィールドを残したまま追加ができる
       .then(function() {
         console.log("Document successfully written!");
-      })
-      .catch(function(error) {
+        firebase.firestore().collection("things").doc(doc_count.toString()).set({
+          thing: things
+        }).catch(function(error){
+          console.error("Error",error);
+        });
+        firebase.firestore().collection("steps").doc(doc_count.toString()).set({
+          step1:step1,
+          step2:step2,
+          step3:step3
+        });
+      }).catch(function(error) {
         console.error("Error writing document: ", error);
-      })
+      });
     });
   }
 </script>

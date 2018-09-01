@@ -166,7 +166,8 @@
                                 //リモートDBに追加できたら以下の処理を実行
                                 var obj2 = { flag: true};
                                 localStorage.setItem(KEY, JSON.stringify(obj2));
-                                fn.load('setting2.html');
+                                //fn.load('setting2.html');
+                                setting2();
                               })
                               .catch(function(error) {
                                 console.error("Error writing document: ", error);
@@ -182,7 +183,8 @@
                           //リモートDBに追加できたら以下の処理を実行
                           var obj2 = { flag: true};
                           localStorage.setItem(KEY, JSON.stringify(obj2));
-                          fn.load('setting2.html');
+                          //fn.load('setting2.html');
+                          setting2();
                         }
                       })
                       .catch(function(error) {
@@ -193,7 +195,8 @@
                     //リモートDBに追加できたら以下の処理を実行
                     var obj2 = { flag: true};
                     localStorage.setItem(KEY, JSON.stringify(obj2));
-                    fn.load('setting2.html');
+                    //fn.load('setting2.html');
+                    setting2();
                   }
                 })
                 .catch(function(error) {
@@ -204,7 +207,8 @@
               //リモートDBに追加できたら以下の処理を実行
               var obj2 = { flag: true};
               localStorage.setItem(KEY, JSON.stringify(obj2));
-              fn.load('setting2.html');
+              //fn.load('setting2.html');
+              setting2();
             }
           })
           .catch(function(error) {
