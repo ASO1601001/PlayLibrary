@@ -13,65 +13,68 @@
 <div class="wrap">
 	<div class="paddi">
 		
-		<h2>遊びの名前</h2>
-    <ons-input id="playname" modifier="underbar" placeholder="手袋" float></ons-input><br>
-		対象年齢：<ons-input id="age" modifier="underbar" placeholder="4"  float></ons-input><br>
-		所要時間：<ons-input id="time" modifier="underbar" placeholder="20" float></ons-input>
-	</div>
-  <!-- 
-	<div class="paddi">
-		<h2>目次</h2>
-		・ 遊びの概要<br>
-		・ 準備するもの<br>
-		・ 遊びの詳細<br>
-		1.ほげほげほげほげ<br>
-		２.ふがふがふがふが
-	</div>
-   -->
-  <div class="jyunbi">
-		<h2>準備物</h2>
-		<ul>
-      <li><ons-input id="pre" modifier="underbar" placeholder="手袋" float></ons-input></li>
-      <button class="button" onclick="comment()">＋</button>
-      
-    </ul>
-	</div>
-
-  <div class="step">
-    <h2>ステップ</h2>
+		<h2 id="dplay_name">遊びの名前</h2>
+    <p id="dplay_sub"></p><br>
     <ul>
-      <li><ons-input id="step" modifier="underbar" placeholder="まずは手を洗います。" float></ons-input></li>
-      <li><ons-input id="step" modifier="underbar" placeholder="お肉を切ります。" float></ons-input></li>
-      <li><ons-input id="step" modifier="underbar" placeholder="焼きます。" float></ons-input></li>
-      <!-- ボタンを押すとステップの入力欄を増やしたい -->
-      <button class="button" onclick="comment()">＋</button>
-
+      <li>推奨年齢<p id="dage"></p></li>
+      <li>推奨人数<p id="dpeaple"></p></li>
+      <li>所要時間<p id="dtime"></p></li>
+      <li>場所<p id="dplace"></p></li>
     </ul>
-  </div>
-  <div class="place">
-    <h2>場所</h2>
-    <p>
-      <ons-input id="place" modifier="underbar" placeholder="まずは手を洗います。" float></ons-input>
-    </p>
-  </div>
-  <button id="upload" onclick="upload()" class="square_btn">投稿する</button>
+    
+    <div>
+      <h3>準備する物</h3>
+      <ol>
+        <li><span id="show_pre_thing0"></span></li>
+        <li><span id="show_pre_thing1"></span></li>
+        <li><span id="show_pre_thing2"></span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>ステップ</h3>
+      <ol>
+        <li><span id="show_step1"></span></li>
+        <li><span id="show_step2"></span></li>
+        <li><span id="show_step3"></span></li>
+      </ol>
+    </div>
 </div>
 <script>
-  
+  document.addEventListener("init", function(event) {
+    var page = event.target;  // initイベントが発生したページ
+    var play_det_id = new String(page.data.param1); //detailメソッドで送られたparam1を取得
+    firebase.firestore().collection('plays').doc(play_det_id.toString()).get().then(function(doc){
+      document.getElementById('dplay_name').innerHTML = doc.data().name;
+      document.getElementById('dage').innerHTML = doc.data().best_age;
+      document.getElementById('dpeaple').innerHTML = doc.data().best_peaple;
+      document.getElementById('dtime').innerHTML = doc.data().minuts;
+      if(doc.data().place != null){
+        document.getElementById('dplace').innerHTML = doc.data().place;
+      }
+    });
+    firebase.firestore().collection('things').doc(play_det_id.toString()).get().then(function(doc){
+      doc.data().thing.forEach(function( value,index ) {
+        document.getElementById('show_pre_thing'+index).innerHTML = value;
+      });
+    });
+    firebase.firestore().collection('steps').doc(play_det_id.toString()).get().then(function(doc){
+      doc.data().step1.forEach(function( value,index ) {
+        if(index==0){
+          document.getElementById('show_step1').innerHTML = value;
+        }
+      });
+      doc.data().step2.forEach(function( value,index ) {
+        if(index==0){
+          document.getElementById('show_step2').innerHTML = value;
+        }
+      });
+      doc.data().step3.forEach(function( value,index ) {
+        if(index==0){
+          document.getElementById('show_step3').innerHTML = value;
+        }
+      });
+    });
+  });
 </script>
 </ons-page>
-
-<!--  データベースのプロフィール呼び出し
-var user = firebase.auth().currentUser;
-var name, email, photoUrl, uid, emailVerified;
-
-if (user != null) {
-  name = user.displayName;
-  email = user.email;
-  photoUrl = user.photoURL;
-  emailVerified = user.emailVerified;
-  uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
-                   // this value to authenticate with your backend server, if
-                   // you have one. Use User.getToken() instead.
-}
--->

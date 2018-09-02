@@ -50,150 +50,148 @@
       }
     });
 
-      window.fn = {};
-      window.fn.open = function() {
-        var menu = document.getElementById('menu');
-        menu.open();
-      };
-      window.fn.load = function(page) {
-        var content = document.getElementById('content');
-        var menu = document.getElementById('menu');
-        content
-          .load(page)
-          .then(menu.close.bind(menu));
-      };
+    window.fn = {};
+    window.fn.open = function() {
+      var menu = document.getElementById('menu');
+      menu.open();
+    };
+    window.fn.load = function(page) {
+      var content = document.getElementById('content');
+      var menu = document.getElementById('menu');
+      content
+        .load(page)
+        .then(menu.close.bind(menu));
+    };
 
-      // ローカルストレージをセットします。
-      function add_user(key,name,mail,pass) {
-        var obj = { name: name, mail:mail, pass: pass};
-        localStorage.setItem(key, JSON.stringify(obj));
-        var item = localStorage.getItem(key);
-        var obj = JSON.parse(item);
-        console.log(obj.name);
+    // ローカルストレージをセットします。
+    function add_user(key,name,mail,pass) {
+      var obj = { name: name, mail:mail, pass: pass};
+      localStorage.setItem(key, JSON.stringify(obj));
+      var item = localStorage.getItem(key);
+      var obj = JSON.parse(item);
+      console.log(obj.name);
+    }
+
+    // ローカルストレージの値を取得します。。
+    function get_user(key) {
+      var item = localStorage.getItem(key);
+      var obj = JSON.parse(item);
+      return obj;
+    }
+
+    // ローカルストレージの指定されたキー名のデータを消去します。
+    function remove_user(key) {
+        localStorage.removeItem(key);
+    }
+
+    //ローカルストレージがあるかチェックします。
+    function local_strage_check(key){
+      var item = localStorage.getItem(key);
+      if(item == null){
+        return false;
       }
+      return true;
+    }
 
-      // ローカルストレージの値を取得します。。
-      function get_user(key) {
-        var item = localStorage.getItem(key);
-        var obj = JSON.parse(item);
-        return obj;
+    function del(){
+      remove_user(add_user_key);
+      remove_user(add_user_key1);
+      remove_user(KEY);
+    }
+
+  //詳細
+    function detail(play_id){
+      hideModal("top");
+      document.querySelector('#navigator').pushPage('detail.html',{data:{param1:play_id}});
+    }
+
+    //コメント
+    function comment(){
+      hideModal("top");
+      document.querySelector('#navigator').pushPage('comment.html');
+    }
+
+    //コメント送信
+    function send(){
+      document.querySelector('#navigator').pushPage('send_comment.html');
+    }
+
+    function setting1(){
+      document.querySelector('#navigator').pushPage('setting1.html');
+    }
+    function setting2(){
+      document.querySelector('#navigator').pushPage('setting2.html');
+    }
+
+    function index(){
+      document.querySelector('#navigator').pushPage('index.html');
+    }
+
+    //カルーセル
+    var prev = function() {
+      var carousel = document.getElementById('carousel');
+      carousel.prev();
+    };
+
+    var next = function() {
+      var carousel = document.getElementById('carousel');
+      carousel.next();
+    };
+
+    ons.ready(function() {
+      var carousel = document.addEventListener('postchange', function(event) {
+        console.log('Changed to ' + event.activeIndex)
+      });
+    });
+
+    //モーダル表示
+    function showModal(id,play_id) {
+      var modal = document.getElementById(id);
+      modal.show();
+      var splay_id = new String(play_id);
+      firebase.firestore().collection("plays").doc(splay_id.toString()).get().then(function(doc) {
+        document.getElementById("modal_name").innerHTML = doc.data().name;
+        document.getElementById("modal_sub").innerHTML = doc.data().sub;
+        document.getElementById("modal_time").innerHTML = doc.data().minuts+"分";
+        document.getElementById("show_play_detail").setAttribute('onclick','detail("'+ doc.id +'")');
+      });
+    }
+    //モーダル非表示
+    function hideModal(id) {
+      var modal = document.getElementById(id);
+      modal.hide();
+    }
+
+    function back(){
+      document.querySelector('#navigator').popPage();
+    }
+
+    function show_profile(){
+      document.querySelector('#navigator').pushPage('my_profile.html');
+    }
+
+    function show_detail(){
+      document.querySelector('#navigator').pushPage('detail.html');
+    }
+
+    function show_play(){
+      document.querySelector('#navigator').pushPage('search_result.html');
+    }
+
+    function disp(){
+      // 「OK」時の処理開始 ＋ 確認ダイアログの表示
+      if(window.confirm('本当にいいんですね？')){
+        out_user();
+        del();
+        fn.load('add_user.html');
       }
-
-      // ローカルストレージの指定されたキー名のデータを消去します。
-      function remove_user(key) {
-          localStorage.removeItem(key);
+      // 「OK」時の処理終了
+      // 「キャンセル」時の処理開始
+      else{
+        window.alert('キャンセルされました'); // 警告ダイアログを表示
       }
-
-      //ローカルストレージがあるかチェックします。
-      function local_strage_check(key){
-        var item = localStorage.getItem(key);
-        if(item == null){
-          return false;
-        }
-        return true;
-      }
-
-      function del(){
-        remove_user(add_user_key);
-        remove_user(add_user_key1);
-        remove_user(KEY);
-      }
-
-    //詳細
-			function detail(){
-				hideModal("top");
-				document.querySelector('#navigator').pushPage('detail.html');
-			}
-
-			//コメント
-			function comment(){
-				hideModal("top");
-				document.querySelector('#navigator').pushPage('comment.html');
-			}
-
-			//コメント送信
-			function send(){
-				document.querySelector('#navigator').pushPage('send_comment.html');
-			}
-
-      function setting1(){
-				document.querySelector('#navigator').pushPage('setting1.html');
-			}
-      function setting2(){
-				document.querySelector('#navigator').pushPage('setting2.html');
-			}
-
-      function index(){
-				document.querySelector('#navigator').pushPage('index.html');
-			}
-
-			//カルーセル
-			var prev = function() {
-				var carousel = document.getElementById('carousel');
-				carousel.prev();
-			};
-
-			var next = function() {
-				var carousel = document.getElementById('carousel');
-				carousel.next();
-			};
-
-			ons.ready(function() {
-				var carousel = document.addEventListener('postchange', function(event) {
-					console.log('Changed to ' + event.activeIndex)
-				});
-			});
-
-			//モーダル表示
-			function showModal(id,play_id) {
-				var modal = document.getElementById(id);
-				modal.show();
-        var splay_id = new String(play_id);
-        firebase.firestore().collection("plays").doc(splay_id.toString()).get().then(function(doc) {
-          document.getElementById("modal_name").innerHTML = doc.data().name;
-          document.getElementById("modal_sub").innerHTML = doc.data().sub;
-          document.getElementById("modal_time").innerHTML = doc.data().minuts+"分";
-        });
-			}
-			//モーダル非表示
-			function hideModal(id) {
-				var modal = document.getElementById(id);
-				modal.hide();
-			}
-
-			function back(){
-				document.querySelector('#navigator').popPage();
-			}
-
-      function show_profile(){
-        document.querySelector('#navigator').pushPage('my_profile.html');
-      }
-
-      function show_detail(){
-        document.querySelector('#navigator').pushPage('detail.html');
-      }
-
-      function show_play(){
-        document.querySelector('#navigator').pushPage('search_result.html');
-      }
-      function disp(){
-
-        // 「OK」時の処理開始 ＋ 確認ダイアログの表示
-        if(window.confirm('本当にいいんですね？')){
-          out_user();
-          del();
-          fn.load('add_user.html');
-        }
-        // 「OK」時の処理終了
-        // 「キャンセル」時の処理開始
-        else{
-          window.alert('キャンセルされました'); // 警告ダイアログを表示
-        }
-        // 「キャンセル」時の処理終了
-
-      }
-
-      
+      // 「キャンセル」時の処理終了
+    }
   </script>
 </head>
 
@@ -239,7 +237,7 @@
 				<p id="modal_sub">遊びの概要</p>
 				<p id="modal_time">所要時間</p>
 			</div>
-			<button class="button" onclick="detail()" id="show_play_detail">詳細</button>
+			<button class="button" id="show_play_detail">詳細</button>
       <!-- detailメソッドをidを引数にして、それの詳細を出すようにする -->
 			<button class="button" onClick="hideModal('top')">閉じる</button>
 			</div>
@@ -279,7 +277,6 @@
 
     function get_store_user(){
       var user = firebase.auth().currentUser;
-
       if (user) {
         // User is signed in.
         var displayName = user.displayName;

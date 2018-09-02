@@ -13,8 +13,8 @@
 	<div>
 		<p>
 			キーワード検索<br>
-			<input type="text">
-      <ons-button modifier="light" onClick="fn.load('search_result.html')" class="square_btn">検索</ons-button>
+			<input type="text" id="word">
+      <ons-button modifier="light" onClick="search()" class="square_btn">検索</ons-button>
 		</p>
 		<p>
 			タグ検索<br>
@@ -22,4 +22,12 @@
 		ランダム検索<br>
 		</p>
 	</div>
+  <script>
+    function search() {
+      var word = document.getElementById('word').value;
+      localStorage.setItem('word', word);
+      console.log(`word: ${word}`);
+      fn.load('search_result.html');
+    }
+  </script>
 </ons-page>

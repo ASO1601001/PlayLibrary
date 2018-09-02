@@ -9,11 +9,26 @@
 			検索結果
 		</div>
 	</ons-toolbar>
-  <div>
-    test
+  <div id="result">
+    検索結果
   </div>
 
   <script>
-    console.log('test')
+    var str = localStorage.getItem('word');
+    var regexp = new RegExp(str);
+    firebase.auth().onAuthStateChanged(function(user) {
+      firebase.firestore().collection('plays').get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            if (doc.data().name.match(regexp)) {
+              var elem = document.getElementById("result");
+              elem.innerHTML += `<p>${doc.data().name}</p>`
+            }
+          });
+      })
+      .catch((err) => {
+        console.log('Error getting documents', err);
+      });
+    })
   </script>
 </ons-page>
