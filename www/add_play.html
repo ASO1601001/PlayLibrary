@@ -56,6 +56,7 @@
 
     </ul>
   </div>
+  
   <div class="place">
     <h2>場所</h2>
     <p>
@@ -63,6 +64,7 @@
     </p>
   </div>
   <button id="upload" onclick="add_play()" class="square_btn">投稿する</button>
+  
 </div>
 <script>
   function add_play(){
@@ -106,6 +108,15 @@
       });
     });
   }
+
+
+
+function imgup(){
+  var file = ... // use the Blob or File API
+  ref.put(file).then(function(snapshot) {
+  console.log('Uploaded a blob or file!');
+});
+}
 </script>
 </ons-page>
 

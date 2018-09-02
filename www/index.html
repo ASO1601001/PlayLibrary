@@ -150,22 +150,10 @@
 				modal.show();
         var splay_id = new String(play_id);
         firebase.firestore().collection("plays").doc(splay_id.toString()).get().then(function(doc) {
-            console.log(doc.id);
+          document.getElementById("modal_name").innerHTML = doc.data().name;
+          document.getElementById("modal_sub").innerHTML = doc.data().sub;
+          document.getElementById("modal_time").innerHTML = doc.data().minuts+"分";
         });
-        /*<ons-modal direction="up" id="top">
-            <div style="text-align: center">
-              <p>
-              <h3 id="modal_name">遊びの名前</h3>
-              </p>
-            <button class="button" onclick="comment()">コメント</button>
-            <div>
-              <p id="modal_sub">遊びの概要</p>
-              <p id="modal_time">所要時間</p>
-            </div>
-            <button class="button" onclick="detail()" id="show_play_detail">詳細</button>
-            <button class="button" onClick="hideModal('top')">閉じる</button>
-            </div>
-          </ons-modal>*/
 			}
 			//モーダル非表示
 			function hideModal(id) {
@@ -252,6 +240,7 @@
 				<p id="modal_time">所要時間</p>
 			</div>
 			<button class="button" onclick="detail()" id="show_play_detail">詳細</button>
+      <!-- detailメソッドをidを引数にして、それの詳細を出すようにする -->
 			<button class="button" onClick="hideModal('top')">閉じる</button>
 			</div>
 		</ons-modal>
