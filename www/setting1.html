@@ -54,6 +54,7 @@
 
     //ここでdisplaynameを取得して、ページに表示
     firebase.auth().onAuthStateChanged(function(user) {
+      console.log(`user: ${user}`)
       if (user) {
         var displayName = user.displayName;
         var uid = user.uid;

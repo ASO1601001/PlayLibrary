@@ -47,23 +47,8 @@
           var errorMessage = error.message;
         // ...
         });
-        document.getElementById('body').setAttribute("onload", "mypage_load();");
       }
     });
-
-    function mypage_load(){
-      console.log()
-        var count = 3;
-        if(count != 0){
-          for(var i=1; i <= count; i+=2){
-            if(i < count){
-              document.getElementById('library').innerHTML += '<ons-row><ons-col class="item">図鑑' + i + '<button onClick="showModal(\'top\')">モーダル</button></ons-col><ons-col  class="item">図鑑' + (i+1) + '<button onClick="showModal(\'top\')">モーダル</button></ons-col></ons-row>';
-            }else{
-              document.getElementById('library').innerHTML += '<ons-row><ons-col  class="item">図鑑' + i + '<button onClick="showModal(\'top\')">モーダル</button></ons-col><ons-col class="item"></ons-col></ons-row>';
-            }
-          }
-        }
-      }
 
       window.fn = {};
       window.fn.open = function() {
@@ -160,9 +145,27 @@
 			});
 
 			//モーダル表示
-			function showModal(id) {
+			function showModal(id,play_id) {
 				var modal = document.getElementById(id);
 				modal.show();
+        var splay_id = new String(play_id);
+        firebase.firestore().collection("plays").doc(splay_id.toString()).get().then(function(doc) {
+            console.log(doc.id);
+        });
+        /*<ons-modal direction="up" id="top">
+            <div style="text-align: center">
+              <p>
+              <h3 id="modal_name">遊びの名前</h3>
+              </p>
+            <button class="button" onclick="comment()">コメント</button>
+            <div>
+              <p id="modal_sub">遊びの概要</p>
+              <p id="modal_time">所要時間</p>
+            </div>
+            <button class="button" onclick="detail()" id="show_play_detail">詳細</button>
+            <button class="button" onClick="hideModal('top')">閉じる</button>
+            </div>
+          </ons-modal>*/
 			}
 			//モーダル非表示
 			function hideModal(id) {
@@ -241,16 +244,14 @@
 		<ons-modal direction="up" id="top">
 			<div style="text-align: center">
 				<p>
-				<h3>遊びの名前</h3>
+				<h3 id="modal_name">遊びの名前</h3>
 				</p>
 			<button class="button" onclick="comment()">コメント</button>
-			<p>
-				・遊びの概要<br>
-				・必要なもの<br>
-				・対象年齢<br>
-				・所要時間
-			</p>
-			<button class="button" onclick="detail()">詳細</button>
+			<div>
+				<p id="modal_sub">遊びの概要</p>
+				<p id="modal_time">所要時間</p>
+			</div>
+			<button class="button" onclick="detail()" id="show_play_detail">詳細</button>
 			<button class="button" onClick="hideModal('top')">閉じる</button>
 			</div>
 		</ons-modal>
