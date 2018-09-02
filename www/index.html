@@ -100,9 +100,9 @@
     }
 
   //詳細
-    function detail(play_id){
+    function detail(play_id,nav_name){
       hideModal("top");
-      document.querySelector('#navigator').pushPage('detail.html',{data:{param1:play_id}});
+      document.querySelector('#'+nav_name).pushPage('detail.html',{data:{param1:play_id}});
     }
 
     //コメント
@@ -145,7 +145,7 @@
     });
 
     //モーダル表示
-    function showModal(id,play_id) {
+    function showModal(id,play_id,nav_name) {
       var modal = document.getElementById(id);
       modal.show();
       var splay_id = new String(play_id);
@@ -153,7 +153,7 @@
         document.getElementById("modal_name").innerHTML = doc.data().name;
         document.getElementById("modal_sub").innerHTML = doc.data().sub;
         document.getElementById("modal_time").innerHTML = doc.data().minuts+"分";
-        document.getElementById("show_play_detail").setAttribute('onclick','detail("'+ doc.id +'")');
+        document.getElementById("show_play_detail").setAttribute('onclick','detail("'+ doc.id +'","'+nav_name+'")');
       });
     }
     //モーダル非表示
@@ -210,6 +210,9 @@
           <!--<ons-list-item onclick="fn.load('board.html')" tappable>
             setting1
           </ons-list-item>-->
+          <ons-list-item onclick="fn.load('play_list.html')" tappable>
+            遊び一覧
+          </ons-list-item>
           <ons-list-item onclick="fn.load('search.html')" tappable>
             あそび検索
           </ons-list-item>

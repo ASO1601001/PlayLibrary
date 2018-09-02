@@ -44,26 +44,17 @@
       if (user) {
         var doccount;
         //alert(user.displayName);
-        firebase.firestore().collection("plays").where("user_id", "==", "b98xkUbUDNTcNKUH7aFuZ4JqMOz2").get().then(function(querySnapshot) {
+        firebase.firestore().collection("plays").where("user_id", "==", user.uid).get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             //console.log(doc.id + " => "+doc.data().name);
             //console.log(querySnapshot.size);
             /*for文でまずsize分レイアウトを出力してから、idで内容を変更する*/
             var docid = new String(doc.id);
-            document.getElementById("lib"+docid.toString()).innerHTML = doc.data().name+'<button onClick="showModal(\'top\','+docid+')">モーダル</button>';
+            document.getElementById("lib"+docid.toString()).innerHTML = doc.data().name+'<button onClick="showModal(\'top\','+docid+',\'navigator\')">モーダル</button>';
           });
         });
       }
     });
-
-    /*var count = 3;
-    for(var i = 1; i < count; i+=2){
-      if(doc.id % 2 == 0){
-        document.getElementById('library').innerHTML += '<ons-row><ons-col class="item">図鑑' + i + '<button onClick="showModal(\'top\')">モーダル</button></ons-col><ons-col  class="item">図鑑' + (i+1) + '<button onClick="showModal(\'top\')">モーダル</button></ons-col></ons-row>';
-      }else{
-        document.getElementById('library').innerHTML += '<ons-row><ons-col  class="item">図鑑' + i + '<button onClick="showModal(\'top\')">モーダル</button></ons-col><ons-col class="item"></ons-col></ons-row>';
-      }
-    }*/
   </script>
 </ons-page>
 </ons-navigator>

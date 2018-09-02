@@ -1,0 +1,38 @@
+<ons-navigator swipeable id="navigator2">
+<ons-page>
+  <div class="page__background" style="background-image:url('img/background.png');background-repeat: no-repeat;background-position: 50% 50%;background-attachment:fixed;"></div>
+	<ons-toolbar>
+		<div class="left">
+			<ons-toolbar-button onclick="fn.open()">
+				<ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+			</ons-toolbar-button>
+		</div>
+		<div class="center">
+			詳細
+		</div>
+	</ons-toolbar>
+
+  <div class="library" id="libra">
+  </div>
+
+  <script>
+    document.addEventListener("init", function(event) {
+      var count = 6;
+      firebase.firestore().collection("plays").limit(6).get().then(function(querySnapshot){
+        for(var i = 1; i < count; i+=2){
+          if(i<count){
+            document.getElementById('libra').innerHTML += '<ons-row><ons-col id="libr'+i+'" class="item">図鑑' + i + '</ons-col><ons-col id="libr'+(i+1)+'" class="item">図鑑' + (i+1) + '</ons-col></ons-row>';
+          }else{
+            document.getElementById('libra').innerHTML += '<ons-row><ons-col id="libr'+i+'" class="item">図鑑' + i + '</ons-col><ons-col class="item"></ons-col></ons-row>';
+          }
+        }
+        var docid;
+        querySnapshot.forEach(function(doc) {
+          docid = new String(doc.id);
+          document.getElementById("libr"+docid.toString()).innerHTML = doc.data().name+'<button onClick="showModal(\'top\','+docid+',\'navigator2\')">概要</button>';
+        });
+      });
+    });
+  </script>
+</ons-page>
+</ons-navigator>
